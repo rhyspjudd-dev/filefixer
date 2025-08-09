@@ -1,0 +1,62 @@
+// ==========================================================================
+// SIMPLE THEME VARIABLES
+// ==========================================================================
+
+// ==========================================================================
+// COLORS
+// ==========================================================================
+
+// Color Palette
+$night: #101010;
+$white: #ffffff;
+$palatinate-blue: #0c34fd;
+$turquoise: #00d3c5;
+$chartreuse: #e4fe5b;
+$wisteria: #ba9eda;
+$dim-gray: #6c6c6c;
+$royal-blue-traditional: #022878;
+$hollywood-cerise: #f21fa1;
+$dark-violet: #8c2ab9;
+
+// Semantic color assignments
+$color-primary: $palatinate-blue;        // Primary blue
+$color-secondary: $dim-gray;             // Gray for secondary elements
+$color-accent: $turquoise;               // Turquoise for accents
+$color-warning: $chartreuse;             // Chartreuse for warnings
+$color-danger: $hollywood-cerise;        // Hollywood cerise for errors
+$color-success: $turquoise;              // Turquoise for success
+$color-info: $wisteria;                  // Wisteria for info
+
+// ==========================================================================
+// TYPOGRAPHY
+// ==========================================================================
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Notable&display=swap');
+
+// Font family
+$font-family: "Lato", sans-serif;
+
+// Font sizes
+$font-size-h1: 4.5rem;    // 40px
+$font-size-h3: 1.5rem;    // 24px
+$font-size-p: 1rem;       // 16px
+
+// Font weights
+$font-weight-normal: 400;
+$font-weight-semibold: 600;
+$font-weight-bold: 900;
+
+// ==========================================================================
+// SPACING
+// ==========================================================================
+
+$spacing-xs: 0.5rem;   // 8px
+$spacing-sm: 1rem;     // 16px
+$spacing-md: 1.5rem;   // 24px
+$spacing-lg: 2rem;     // 32px
+$spacing-xl: 3rem;     // 48px
+
+// ==========================================================================
+// BORDER RADIUS
+// ==========================================================================
+
+$border-radius: 0.5rem;  // 8px

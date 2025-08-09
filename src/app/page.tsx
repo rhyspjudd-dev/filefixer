@@ -1,95 +1,72 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState } from 'react';
+import FileUploader from '@/components/FileUploader';
+import FileListPreview from '@/components/FileListPreview';
+import DownloadButton from '@/components/DownloadButton';
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [files, setFiles] = useState<File[]>([]);
+  const [casingStyle, setCasingStyle] = useState<'kebab' | 'camel' | 'pascal'>('kebab');
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+  return (
+    <div style={{
+      minHeight: '100vh',
+      backgroundColor: 'var(--background)',
+      padding: 'var(--spacing-md)'
+    }}>
+      <div style={{
+        maxWidth: '800px',
+        margin: '0 auto',
+        padding: 'var(--spacing-lg)'
+      }}>
+        <header style={{ 
+          textAlign: 'center', 
+          marginBottom: 'var(--spacing-xl)' 
+        }}>
+          <h1 style={{ 
+            marginBottom: 'var(--spacing-sm)',
+            color: 'var(--text)'
+          }}>
+            <span>File</span><span>Fixer</span>
+          </h1>
+          <p style={{ 
+            fontSize: '18px'
+          }}>
+            Drop your files, we’ll remove spaces, clean names, and zip them up.
+          </p>
+        </header>
+
+        <main>
+          <FileUploader 
+            files={files} 
+            setFiles={setFiles} 
+            maxFiles={10} 
           />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+          
+          <FileListPreview 
+            files={files} 
+            casingStyle={casingStyle}
+            setCasingStyle={setCasingStyle}
           />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+          
+          <DownloadButton 
+            files={files} 
+            casingStyle={casingStyle} 
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        </main>
+
+        <footer style={{ 
+          textAlign: 'center', 
+          marginTop: 'var(--spacing-xl)',
+          padding: 'var(--spacing-lg)',
+          borderTop: '1px solid var(--border)',
+          color: 'var(--text-muted)',
+          fontSize: '14px'
+        }}>
+          <p>We never store your files • File processing happens entirely in your browser</p>
+        </footer>
+      </div>
     </div>
   );
 }
