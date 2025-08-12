@@ -1,8 +1,18 @@
-'use client';
-
 import Link from 'next/link';
+import { getServerSession } from '@/lib/auth';
+import { redirect } from 'next/navigation';
+import UpgradeButton from '@/components/UpgradeButton';
 
-export default function ProPage() {
+export default async function ProPage() {
+  const session = await getServerSession();
+  
+  if (!session) {
+    redirect('/signin');
+  }
+
+  const user = session.user;
+  const isAdmin = user.role === 'admin';
+
   return (
     <div style={{
       minHeight: '100vh',
@@ -20,6 +30,55 @@ export default function ProPage() {
         borderRadius: 'var(--border-radius)',
         border: '1px solid var(--border)'
       }}>
+        {isAdmin && (
+          <div style={{
+            background: 'linear-gradient(135deg, var(--color-warning), var(--color-chartreuse))',
+            color: 'var(--color-night)',
+            padding: 'var(--spacing-sm)',
+            borderRadius: 'var(--border-radius)',
+            marginBottom: 'var(--spacing-lg)',
+            fontSize: '14px',
+            fontWeight: '600'
+          }}>
+            🔑 Owner mode active - You have unlimited access
+          </div>
+        )}
+
+        <div style={{
+          marginBottom: 'var(--spacing-lg)',
+          padding: 'var(--spacing-md)',
+          backgroundColor: 'var(--background)',
+          borderRadius: 'var(--border-radius)',
+          border: '1px solid var(--border)'
+        }}>
+          <h2 style={{
+            marginBottom: 'var(--spacing-sm)',
+            color: 'var(--text)',
+            fontSize: '1.5rem'
+          }}>
+            Welcome, {user.name || user.email}!
+          </h2>
+          <p style={{
+            color: 'var(--text-muted)',
+            fontSize: '16px'
+          }}>
+            You&apos;re signed in as <strong>{user.email}</strong>
+          </p>
+          {user.isPro && (
+            <div style={{
+              marginTop: 'var(--spacing-sm)',
+              padding: 'var(--spacing-xs)',
+              background: 'linear-gradient(135deg, var(--color-turquoise), var(--color-chartreuse))',
+              borderRadius: 'var(--border-radius)',
+              color: 'var(--color-night)',
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>
+              ✨ Pro Account Active
+            </div>
+          )}
+        </div>
+
         <h1 style={{
           marginBottom: 'var(--spacing-lg)',
           background: 'linear-gradient(135deg, var(--color-turquoise), var(--color-chartreuse))',
@@ -125,30 +184,7 @@ export default function ProPage() {
           </div>
         </div>
 
-        <button style={{
-          background: 'linear-gradient(135deg, var(--color-turquoise), var(--color-chartreuse))',
-          color: 'var(--color-night)',
-          border: 'none',
-          borderRadius: 'var(--border-radius)',
-          padding: 'var(--spacing-md) var(--spacing-xl)',
-          fontSize: '18px',
-          fontWeight: '600',
-          cursor: 'pointer',
-          marginBottom: 'var(--spacing-md)',
-          transition: 'transform 0.2s'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.05)';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)';
-        }}
-        onClick={() => {
-          alert('Payment integration would go here! For now, this is just a demo.');
-        }}
-        >
-          🚀 Upgrade to Pro
-        </button>
+        <UpgradeButton isAdmin={isAdmin} />
 
         <div style={{
           fontSize: '12px',

@@ -5,6 +5,7 @@ import FileUploader from '@/components/FileUploader';
 import FileListPreview from '@/components/FileListPreview';
 import DownloadButton from '@/components/DownloadButton';
 import UsageIndicator from '@/components/UsageIndicator';
+import AuthButtons from '@/components/AuthButtons';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
@@ -27,6 +28,20 @@ export default function Home() {
         margin: '0 auto',
         padding: 'var(--spacing-lg)'
       }}>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: 'var(--spacing-lg)',
+          padding: 'var(--spacing-sm) 0',
+          borderBottom: '1px solid var(--border)'
+        }}>
+          <div style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text)' }}>
+            FileFixer
+          </div>
+          <AuthButtons />
+        </div>
+
         <header style={{ 
           textAlign: 'center', 
           marginBottom: 'var(--spacing-xl)' 
