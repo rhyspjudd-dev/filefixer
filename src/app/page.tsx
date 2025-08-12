@@ -4,10 +4,17 @@ import { useState } from 'react';
 import FileUploader from '@/components/FileUploader';
 import FileListPreview from '@/components/FileListPreview';
 import DownloadButton from '@/components/DownloadButton';
+import UsageIndicator from '@/components/UsageIndicator';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
   const [casingStyle, setCasingStyle] = useState<'kebab' | 'camel' | 'pascal'>('kebab');
+  const [usageRefreshTrigger, setUsageRefreshTrigger] = useState(0);
+
+  const handleUsageUpdate = () => {
+    // Trigger refresh of usage indicator
+    setUsageRefreshTrigger(prev => prev + 1);
+  };
 
   return (
     <div style={{
@@ -37,6 +44,8 @@ export default function Home() {
           </p>
         </header>
 
+        <UsageIndicator key={usageRefreshTrigger} />
+
         <main>
           <FileUploader 
             files={files} 
@@ -52,7 +61,8 @@ export default function Home() {
           
           <DownloadButton 
             files={files} 
-            casingStyle={casingStyle} 
+            casingStyle={casingStyle}
+            onUsageUpdate={handleUsageUpdate}
           />
         </main>
 
