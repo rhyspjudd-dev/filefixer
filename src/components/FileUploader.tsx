@@ -1,6 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
+import { useCallback, useRef } from 'react';
+import Button from '@/components/Button';
 
 interface FileUploaderProps {
   files: File[];
@@ -76,33 +77,13 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
             marginBottom: 'var(--spacing-sm)'
           }}>
             <h4>Selected Files ({files.length})</h4>
-            <button 
+            <Button 
               onClick={() => setFiles([])}
-              style={{
-                backgroundColor: 'var(--color-warning)',
-                color: 'var(--background)',
-                border: 'none',
-                borderRadius: 'var(--border-radius)',
-                padding: 'var(--spacing-xs) var(--spacing-sm)',
-                fontSize: '14px',
-                fontWeight: '600',
-                cursor: 'pointer',
-                opacity: 1,
-                transition: '0.2s',
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'var(--background)';
-                e.currentTarget.style.color = 'var(--color-warning)';
-                e.currentTarget.style.border = '1px solid var(--color-warning)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'var(--color-warning)';
-                e.currentTarget.style.color = 'var(--background)';
-                e.currentTarget.style.border = 'none';
-              }}
+              variant="primary"
+              size="medium"
             >
               Clear All
-            </button>
+            </Button>
           </div>
           
           <div style={{ 

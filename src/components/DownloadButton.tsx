@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { cleanFileName } from '@/utils/cleanFileName';
 import { hasReachedLimit, incrementUsage } from '@/utils/usageTracker';
+import Button from '@/components/Button';
 
 type CasingStyle = 'kebab' | 'camel' | 'pascal';
 
@@ -86,57 +87,33 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
 
   return (
     <div style={{ marginTop: 'var(--spacing-lg)', textAlign: 'center' }}>
-      <button
+            <Button
         onClick={handleDownload}
         disabled={isDisabled}
+        variant="primary"
+        size="large"
         style={{
-          backgroundColor: limitReached 
-            ? 'var(--color-secondary)' 
-            : isProcessing 
-              ? 'var(--color-secondary)' 
-              : 'var(--color-warning)',
-          color: isDisabled ? 'white' : 'var(--background)',
-          border: 'none',
-          borderRadius: 'var(--border-radius)',
           padding: 'var(--spacing-sm) var(--spacing-lg)',
-          fontSize: '16px',
-          fontWeight: '600',
-          cursor: isDisabled ? 'not-allowed' : 'pointer',
-          opacity: isDisabled ? 0.6 : 1,
-          transition: '0.2s',
-        }}
-        onMouseEnter={(e) => {
-          if (!isDisabled) {
-            e.currentTarget.style.background = 'var(--background)';
-            e.currentTarget.style.color = 'var(--color-warning)';
-            e.currentTarget.style.border = '1px solid var(--color-warning)';
-          }
-        }}
-        onMouseLeave={(e) => {
-          if (!isDisabled) {
-            e.currentTarget.style.background = 'var(--color-warning)';
-            e.currentTarget.style.color = 'var(--background)';
-            e.currentTarget.style.border = 'none';
-          }
+          fontSize: '16px'
         }}
       >
         {limitReached ? (
           <>
-            <span style={{ marginRight: 'var(--spacing-xs)' }}>🚫</span>
+            <span>🚫</span>
             Free Limit Reached
           </>
         ) : isProcessing ? (
           <>
-            <span style={{ marginRight: 'var(--spacing-xs)' }}>⏳</span>
+            <span>⏳</span>
             Processing...
           </>
         ) : (
           <>
-            <span style={{ marginRight: 'var(--spacing-xs)' }}>📦</span>
+            <span>📦</span>
             Download Cleaned Files ({files.length})
           </>
         )}
-      </button>
+      </Button>
       
       <p style={{ 
         marginTop: 'var(--spacing-xs)', 

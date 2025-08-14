@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
+import Button from '@/components/Button'
 
 export default function AuthButtons() {
   const { data: session, status } = useSession()
@@ -72,57 +73,22 @@ export default function AuthButtons() {
           )}
         </div>
         
-        <button
+        <Button 
           onClick={() => signOut({ callbackUrl: "/" })}
-          style={{
-            padding: 'var(--spacing-xs) var(--spacing-sm)',
-            backgroundColor: 'transparent',
-            color: 'var(--text-muted)',
-            border: '1px solid var(--border)',
-            borderRadius: 'var(--border-radius)',
-            fontSize: '14px',
-            cursor: 'pointer',
-            transition: '0.2s'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'var(--surface)'
-            e.currentTarget.style.color = 'var(--text)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'transparent'
-            e.currentTarget.style.color = 'var(--text-muted)'
-          }}
+          variant="primary"
+          size="small"
         >
           Sign out
-        </button>
+        </Button>
       </div>
     )
   }
 
   return (
-    <Link
-      href="/signin"
-      style={{
-        padding: 'var(--spacing-xs) var(--spacing-sm)',
-        backgroundColor: 'transparent',
-        color: 'var(--color-turquoise)',
-        border: '1px solid var(--color-turquoise)',
-        borderRadius: 'var(--border-radius)',
-        fontSize: '14px',
-        textDecoration: 'none',
-        transition: '0.2s',
-        fontWeight: '500'
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--color-turquoise)'
-        e.currentTarget.style.color = 'var(--background)'
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'transparent'
-        e.currentTarget.style.color = 'var(--color-turquoise)'
-      }}
-    >
-      Sign in
+    <Link href="/signin">
+      <Button variant="primary" size="small">
+        Sign in
+      </Button>
     </Link>
   )
 }

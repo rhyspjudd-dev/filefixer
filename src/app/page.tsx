@@ -30,15 +30,12 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'flex-end',
           alignItems: 'center',
           marginBottom: 'var(--spacing-lg)',
           padding: 'var(--spacing-sm) 0',
           borderBottom: '1px solid var(--border)'
         }}>
-          <div style={{ fontSize: '18px', fontWeight: '600', color: 'var(--text)' }}>
-            FileFixer
-          </div>
           <AuthButtons />
         </div>
 
