@@ -1,9 +1,7 @@
 'use client';
 
 import React from 'react';
-import { cleanFileName } from '@/utils/cleanFileName';
-
-type CasingStyle = 'lowercase' | 'kebab' | 'camel' | 'pascal';
+import { cleanFileName, type CasingStyle } from '@/utils/cleanFileName';
 
 interface FileListPreviewProps {
   files: File[];

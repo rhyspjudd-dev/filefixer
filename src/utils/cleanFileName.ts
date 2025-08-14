@@ -1,14 +1,12 @@
-/**
- * @typedef {'lowercase' | 'kebab' | 'camel' | 'pascal'} CasingStyle
- */
+export type CasingStyle = 'lowercase' | 'kebab' | 'camel' | 'pascal';
 
 /**
  * Clean a filename by removing special characters and applying casing style
- * @param {string} name - The original filename
- * @param {CasingStyle} style - The casing style to apply
- * @returns {string} The cleaned filename
+ * @param name - The original filename
+ * @param style - The casing style to apply
+ * @returns The cleaned filename
  */
-export function cleanFileName(name, style = 'lowercase') {
+export function cleanFileName(name: string, style: CasingStyle = 'lowercase'): string {
   const extension = name.substring(name.lastIndexOf('.') + 1);
   const base = name.substring(0, name.lastIndexOf('.'));
 

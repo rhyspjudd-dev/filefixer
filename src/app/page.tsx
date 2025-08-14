@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { type CasingStyle } from '@/utils/cleanFileName';
 import FileUploader from '@/components/FileUploader';
 import FileListPreview from '@/components/FileListPreview';
 import DownloadButton from '@/components/DownloadButton';
@@ -9,7 +10,7 @@ import AuthButtons from '@/components/AuthButtons';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
-  const [casingStyle, setCasingStyle] = useState<'lowercase' | 'kebab' | 'camel' | 'pascal'>('lowercase');
+  const [casingStyle, setCasingStyle] = useState<CasingStyle>('lowercase');
   const [usageRefreshTrigger, setUsageRefreshTrigger] = useState(0);
 
   const handleUsageUpdate = () => {

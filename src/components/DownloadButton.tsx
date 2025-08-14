@@ -2,11 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
-import { cleanFileName } from '@/utils/cleanFileName';
+import { cleanFileName, type CasingStyle } from '@/utils/cleanFileName';
 import { hasReachedLimit, incrementUsage } from '@/utils/usageTracker';
 import Button from '@/components/Button';
-
-type CasingStyle = 'lowercase' | 'kebab' | 'camel' | 'pascal';
 
 interface DownloadButtonProps {
   files: File[];
