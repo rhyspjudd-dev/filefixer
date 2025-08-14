@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { getUsageStats } from '@/utils/usageTracker';
 
 interface UsageStats {
@@ -11,12 +12,20 @@ interface UsageStats {
 }
 
 export default function UsageIndicator() {
+  const { data: session } = useSession();
   const [stats, setStats] = useState<UsageStats | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // Don't show usage indicator for Pro users
+  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+  
   useEffect(() => {
-    loadStats();
-  }, []);
+    if (!isPro) {
+      loadStats();
+    } else {
+      setLoading(false);
+    }
+  }, [isPro]);
 
   const loadStats = async () => {
     try {
@@ -31,10 +40,17 @@ export default function UsageIndicator() {
 
   // Refresh stats when component receives focus (user switches back to tab)
   useEffect(() => {
-    const handleFocus = () => loadStats();
-    window.addEventListener('focus', handleFocus);
-    return () => window.removeEventListener('focus', handleFocus);
-  }, []);
+    if (!isPro) {
+      const handleFocus = () => loadStats();
+      window.addEventListener('focus', handleFocus);
+      return () => window.removeEventListener('focus', handleFocus);
+    }
+  }, [isPro]);
+
+  // Don't render anything for Pro users
+  if (isPro) {
+    return null;
+  }
 
   if (loading || !stats) {
     return null;

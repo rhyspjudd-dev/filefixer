@@ -1,11 +1,8 @@
-import { getServerSession as nextAuthGetServerSession } from "next-auth"
-import { authOptions } from "@/lib/authConfig"
+import { auth } from "@/lib/authConfig"
 import type { Session } from "next-auth"
 
-export { authOptions }
-
 export async function getServerSession() {
-  return await nextAuthGetServerSession(authOptions)
+  return await auth()
 }
 
 export function isAdmin(session: Session | null): boolean {

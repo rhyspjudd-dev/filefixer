@@ -1,4 +1,4 @@
-import { NextAuthOptions } from "next-auth"
+import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 
@@ -7,7 +7,7 @@ const OWNER_EMAILS = (process.env.OWNER_EMAILS || "")
   .map(email => email.trim().toLowerCase())
   .filter(Boolean)
 
-export const authOptions: NextAuthOptions = {
+export const { handlers: { GET, POST }, auth } = NextAuth({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -61,4 +61,4 @@ export const authOptions: NextAuthOptions = {
   pages: {
     signIn: "/signin",
   },
-}
+})

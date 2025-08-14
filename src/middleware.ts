@@ -1,23 +1,15 @@
-import { withAuth } from "next-auth/middleware"
+import { auth } from "@/lib/authConfig"
+import { NextResponse } from "next/server"
 
-export default withAuth(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function middleware(_req) {
-    // Middleware function runs after authentication
-    // You can add additional logic here if needed
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // Only protect /pro routes
-        if (req.nextUrl.pathname.startsWith('/pro')) {
-          return !!token
-        }
-        return true
-      },
-    },
+export default auth((req) => {
+  // Only protect /pro routes
+  if (req.nextUrl.pathname.startsWith('/pro')) {
+    if (!req.auth) {
+      return NextResponse.redirect(new URL('/signin', req.url))
+    }
   }
-)
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: ["/pro/:path*"]

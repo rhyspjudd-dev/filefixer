@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { cleanFileName } from '@/utils/cleanFileName';
 import { hasReachedLimit, incrementUsage } from '@/utils/usageTracker';
 import Button from '@/components/Button';
@@ -14,13 +15,19 @@ interface DownloadButtonProps {
 }
 
 export default function DownloadButton({ files, casingStyle, onUsageUpdate }: DownloadButtonProps) {
+  const { data: session } = useSession();
   const [isProcessing, setIsProcessing] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
 
-  // Check usage limit when component mounts or files change
+  // Check if user is Pro
+  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+
+  // Check usage limit when component mounts or files change (only for non-Pro users)
   useEffect(() => {
-    checkUsageLimit();
-  }, [files]);
+    if (!isPro) {
+      checkUsageLimit();
+    }
+  }, [files, isPro]);
 
   const checkUsageLimit = async () => {
     const reached = await hasReachedLimit();
@@ -28,13 +35,18 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
   };
 
   const handleDownload = async () => {
-    if (files.length === 0 || limitReached) return;
+    if (files.length === 0) return;
 
-    // Check if processing these files would exceed the limit
-    const wouldExceedLimit = await hasReachedLimit();
-    if (wouldExceedLimit) {
-      setLimitReached(true);
-      return;
+    // For Pro users, skip usage limit checks
+    if (!isPro) {
+      if (limitReached) return;
+
+      // Check if processing these files would exceed the limit
+      const wouldExceedLimit = await hasReachedLimit();
+      if (wouldExceedLimit) {
+        setLimitReached(true);
+        return;
+      }
     }
 
     setIsProcessing(true);
@@ -50,15 +62,17 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
         zip.file(cleanedName, file);
       }
 
-      // Increment usage count for the number of files processed
-      const usageResult = await incrementUsage(files.length);
-      
-      // Update limit reached state
-      setLimitReached(usageResult.limitReached);
-      
-      // Notify parent component to refresh usage display
-      if (onUsageUpdate) {
-        onUsageUpdate();
+      // Increment usage count for the number of files processed (only for non-Pro users)
+      if (!isPro) {
+        const usageResult = await incrementUsage(files.length);
+        
+        // Update limit reached state
+        setLimitReached(usageResult.limitReached);
+        
+        // Notify parent component to refresh usage display
+        if (onUsageUpdate) {
+          onUsageUpdate();
+        }
       }
 
       // Generate zip file
@@ -83,7 +97,7 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
 
   if (files.length === 0) return null;
 
-  const isDisabled = isProcessing || limitReached;
+    const isDisabled = files.length === 0 || isProcessing || (!isPro && limitReached);
 
   return (
     <div style={{ marginTop: 'var(--spacing-lg)', textAlign: 'center' }}>
@@ -97,7 +111,7 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
           fontSize: '16px'
         }}
       >
-        {limitReached ? (
+        {!isPro && limitReached ? (
           <>
             <span>🚫</span>
             Free Limit Reached
@@ -120,7 +134,7 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
         fontSize: '14px', 
         color: 'var(--text-muted)' 
       }}>
-        {limitReached 
+        {!isPro && limitReached 
           ? 'Upgrade to Pro for unlimited file renames'
           : 'Files will be renamed and zipped for download'
         }
