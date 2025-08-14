@@ -1,5 +1,5 @@
 /**
- * @typedef {'kebab' | 'camel' | 'pascal'} CasingStyle
+ * @typedef {'lowercase' | 'kebab' | 'camel' | 'pascal'} CasingStyle
  */
 
 /**
@@ -8,7 +8,7 @@
  * @param {CasingStyle} style - The casing style to apply
  * @returns {string} The cleaned filename
  */
-export function cleanFileName(name, style = 'kebab') {
+export function cleanFileName(name, style = 'lowercase') {
   const extension = name.substring(name.lastIndexOf('.') + 1);
   const base = name.substring(0, name.lastIndexOf('.'));
 
@@ -21,6 +21,10 @@ export function cleanFileName(name, style = 'kebab') {
   let newName = '';
 
   switch (style) {
+    case 'lowercase':
+      newName = words.map(word => word.toLowerCase()).join('');
+      break;
+
     case 'camel':
       newName = words
         .map((word, i) =>

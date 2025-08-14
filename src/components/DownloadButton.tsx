@@ -6,7 +6,7 @@ import { cleanFileName } from '@/utils/cleanFileName';
 import { hasReachedLimit, incrementUsage } from '@/utils/usageTracker';
 import Button from '@/components/Button';
 
-type CasingStyle = 'kebab' | 'camel' | 'pascal';
+type CasingStyle = 'lowercase' | 'kebab' | 'camel' | 'pascal';
 
 interface DownloadButtonProps {
   files: File[];

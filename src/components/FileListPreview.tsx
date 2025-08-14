@@ -3,7 +3,7 @@
 import React from 'react';
 import { cleanFileName } from '@/utils/cleanFileName';
 
-type CasingStyle = 'kebab' | 'camel' | 'pascal';
+type CasingStyle = 'lowercase' | 'kebab' | 'camel' | 'pascal';
 
 interface FileListPreviewProps {
   files: File[];
@@ -38,6 +38,7 @@ export default function FileListPreview({ files, casingStyle, setCasingStyle }: 
               fontSize: '14px'
             }}
           >
+            <option value="lowercase">lowercase</option>
             <option value="kebab">kebab-case</option>
             <option value="camel">camelCase</option>
             <option value="pascal">PascalCase</option>

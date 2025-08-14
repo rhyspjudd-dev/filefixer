@@ -9,7 +9,7 @@ import AuthButtons from '@/components/AuthButtons';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
-  const [casingStyle, setCasingStyle] = useState<'kebab' | 'camel' | 'pascal'>('kebab');
+  const [casingStyle, setCasingStyle] = useState<'lowercase' | 'kebab' | 'camel' | 'pascal'>('lowercase');
   const [usageRefreshTrigger, setUsageRefreshTrigger] = useState(0);
 
   const handleUsageUpdate = () => {
