@@ -4,7 +4,7 @@
  */
 
 const STORAGE_KEY = 'filefixer_usage';
-const FREE_DAILY_LIMIT = 8;
+const FREE_DAILY_LIMIT = 10;
 const IP_API_URL = 'https://ipify.org?format=json';
 
 /**

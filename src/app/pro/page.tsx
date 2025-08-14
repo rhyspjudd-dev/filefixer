@@ -131,7 +131,7 @@ export default async function ProPage() {
               fontSize: '14px',
               lineHeight: 1.6
             }}>
-              <li>8 files per day</li>
+              <li>10 files per day</li>
               <li>Basic file cleaning</li>
               <li>ZIP download</li>
             </ul>

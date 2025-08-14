@@ -4,7 +4,7 @@ A browser-based tool for quickly and safely renaming messy files. Built with **N
 
 ## Features
 
-- **Free Tier**: Rename up to 8 files per day (no sign-in required)
+- **Free Tier**: Rename up to 10 files per day (no sign-in required)
 - **Pro Tier**: Unlimited file renames with authentication
 - **OAuth Login**: Sign in with Google or GitHub
 - **Admin Access**: Owner emails get unlimited Pro access
@@ -103,7 +103,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ### User Roles
 
-- **Free Users**: Anonymous access, 8 files/day limit
+- **Free Users**: Anonymous access, 10 files/day limit
 - **Authenticated Users**: Sign in with Google/GitHub, access to Pro features
 - **Admin Users**: Emails listed in `OWNER_EMAILS` get unlimited access
 
@@ -160,7 +160,7 @@ src/
 - [ ] After sign-in, users land on `/pro` page
 - [ ] Header shows user info + "Admin" badge for owner emails
 - [ ] Sessions persist on page refresh
-- [ ] Usage limits work correctly (8 files/day for free users)
+- [ ] Usage limits work correctly (10 files/day for free users)
 - [ ] Admin users bypass all usage limits
 - [ ] Sign out redirects to homepage
 
