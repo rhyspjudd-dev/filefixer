@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { cleanFileName, type CasingStyle } from '@/utils/cleanFileName';
-import { hasReachedLimit, incrementUsage } from '@/utils/usageTracker';
+import { hasReachedLimit, incrementUsage, checkDailyLimit } from '@/utils/usageTracker';
 import Button from '@/components/Button';
+import UpgradeToProModal from '@/components/UpgradeToProModal';
 
 interface DownloadButtonProps {
   files: File[];
@@ -16,6 +17,13 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
   const { data: session } = useSession();
   const [isProcessing, setIsProcessing] = useState(false);
   const [limitReached, setLimitReached] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeModalData, setUpgradeModalData] = useState<{
+    remainingFiles: number;
+    totalUsed: number;
+    dailyLimit: number;
+    attemptedFiles: number;
+  } | null>(null);
 
   // Check if user is Pro
   const isPro = session?.user?.isPro || session?.user?.role === 'admin';
@@ -39,9 +47,15 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
     if (!isPro) {
       if (limitReached) return;
 
-      // Check if processing these files would exceed the limit
-      const wouldExceedLimit = await hasReachedLimit();
-      if (wouldExceedLimit) {
+      const limitCheck = await checkDailyLimit(files.length);
+      if (!limitCheck.allowed) {
+        setUpgradeModalData({
+          remainingFiles: limitCheck.remainingToday,
+          totalUsed: limitCheck.totalToday,
+          dailyLimit: limitCheck.limit,
+          attemptedFiles: files.length
+        });
+        setShowUpgradeModal(true);
         setLimitReached(true);
         return;
       }
@@ -137,6 +151,18 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
           : 'Files will be renamed and zipped for download'
         }
       </p>
+
+      {/* Upgrade to Pro Modal */}
+      {upgradeModalData && (
+        <UpgradeToProModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          remainingFiles={upgradeModalData.remainingFiles}
+          totalUsed={upgradeModalData.totalUsed}
+          dailyLimit={upgradeModalData.dailyLimit}
+          attemptedFiles={upgradeModalData.attemptedFiles}
+        />
+      )}
     </div>
   );
 }

@@ -1,7 +1,10 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { checkDailyLimit, getUsageStats } from '@/utils/usageTracker';
 import Button from '@/components/Button';
+import UpgradeToProModal from '@/components/UpgradeToProModal';
 
 interface FileUploaderProps {
   files: File[];
@@ -10,9 +13,37 @@ interface FileUploaderProps {
 }
 
 export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUploaderProps) {
+  const { data: session } = useSession();
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [dailyUsage, setDailyUsage] = useState<{ used: number; limit: number; remaining: number } | null>(null);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [upgradeModalData, setUpgradeModalData] = useState<{
+    remainingFiles: number;
+    totalUsed: number;
+    dailyLimit: number;
+    attemptedFiles: number;
+  } | null>(null);
 
-  const handleFileSelect = (selectedFiles: FileList | null) => {
+  // Check if user is Pro (Pro users have no daily limits)
+  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+
+  // Load daily usage stats for non-Pro users
+  useEffect(() => {
+    if (!isPro) {
+      loadDailyUsage();
+    }
+  }, [isPro]);
+
+  const loadDailyUsage = async () => {
+    try {
+      const stats = await getUsageStats();
+      setDailyUsage(stats);
+    } catch (error) {
+      console.error('Error loading daily usage:', error);
+    }
+  };
+
+  const handleFileSelect = async (selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
     const newFiles = Array.from(selectedFiles);
@@ -32,6 +63,21 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       alert('All selected files are already uploaded');
       return;
     }
+
+    // For non-Pro users, check if adding these files would exceed daily limit
+    if (!isPro) {
+      const limitCheck = await checkDailyLimit(uniqueNewFiles.length);
+      if (!limitCheck.allowed) {
+        setUpgradeModalData({
+          remainingFiles: limitCheck.remainingToday,
+          totalUsed: limitCheck.totalToday,
+          dailyLimit: limitCheck.limit,
+          attemptedFiles: uniqueNewFiles.length
+        });
+        setShowUpgradeModal(true);
+        return;
+      }
+    }
     
     const totalFiles = [...files, ...uniqueNewFiles];
 
@@ -41,6 +87,11 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
     }
 
     setFiles(totalFiles);
+    
+    // Refresh daily usage stats after adding files
+    if (!isPro) {
+      loadDailyUsage();
+    }
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -78,6 +129,15 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
           <p style={{ color: 'var(--text-muted)', marginTop: 'var(--spacing-xs)' }}>
             Maximum {maxFiles} files
           </p>
+          {!isPro && dailyUsage && (
+            <p style={{ 
+              color: dailyUsage.remaining <= 2 ? 'var(--color-warning)' : 'var(--text-muted)', 
+              marginTop: 'var(--spacing-xs)',
+              fontSize: '13px'
+            }}>
+              Daily limit: {dailyUsage.used}/{dailyUsage.limit} files used today
+            </p>
+          )}
         </div>
       </div>
 
@@ -143,6 +203,18 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
             ))}
           </div>
         </div>
+      )}
+
+      {/* Upgrade to Pro Modal */}
+      {upgradeModalData && (
+        <UpgradeToProModal
+          isOpen={showUpgradeModal}
+          onClose={() => setShowUpgradeModal(false)}
+          remainingFiles={upgradeModalData.remainingFiles}
+          totalUsed={upgradeModalData.totalUsed}
+          dailyLimit={upgradeModalData.dailyLimit}
+          attemptedFiles={upgradeModalData.attemptedFiles}
+        />
       )}
     </div>
   );

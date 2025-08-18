@@ -101,6 +101,27 @@ export async function getDailyUsage() {
 }
 
 /**
+ * Check if adding newFileCount would exceed daily limit
+ * Should be called before processing files to prevent user from uploading files they can't use
+ * @param {number} newFileCount - Number of new files user wants to add
+ * @returns {Promise<{allowed: boolean, remainingToday: number, totalToday: number, wouldExceed: number, limit: number}>}
+ */
+export async function checkDailyLimit(newFileCount = 0) {
+  const usage = await getDailyUsage();
+  const wouldHaveAfterAdding = usage.count + newFileCount;
+  const allowed = wouldHaveAfterAdding <= FREE_DAILY_LIMIT;
+  const wouldExceed = Math.max(0, wouldHaveAfterAdding - FREE_DAILY_LIMIT);
+
+  return {
+    allowed: allowed,
+    remainingToday: usage.remaining,
+    totalToday: usage.count,
+    wouldExceed: wouldExceed,
+    limit: FREE_DAILY_LIMIT
+  };
+}
+
+/**
  * Check if user has reached the daily limit
  */
 export async function hasReachedLimit() {
