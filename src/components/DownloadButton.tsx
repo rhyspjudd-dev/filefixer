@@ -47,6 +47,7 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
     if (!isPro) {
       if (limitReached) return;
 
+      // Double-check the daily limit right before processing (in case user waited and limit changed)
       const limitCheck = await checkDailyLimit(files.length);
       if (!limitCheck.allowed) {
         setUpgradeModalData({
