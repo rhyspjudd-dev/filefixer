@@ -1,16 +1,34 @@
 'use client';
 
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import PricingPlans from '@/components/PricingPlans';
 import Button from '@/components/Button';
 
+// Helper function to get checkout URL with user email
+function getCheckoutUrl(baseUrl: string, userEmail?: string): string {
+  if (!userEmail) {
+    return baseUrl
+  }
+  
+  // Add email as URL parameter for better tracking
+  const url = new URL(baseUrl)
+  url.searchParams.set('checkout[email]', userEmail)
+  url.searchParams.set('checkout[custom][user_email]', userEmail)
+  
+  return url.toString()
+}
+
 export default function PricingPage() {
+  const { data: session } = useSession();
+
   const handlePurchaseMonthly = () => {
     try {
-      // Create checkout URL for monthly plan
-      const checkoutUrl = `${process.env.NEXT_PUBLIC_LEMONSQUEEZY_CHECKOUT_URL || 'https://filefixer.lemonsqueezy.com/checkout/buy'}/${process.env.NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_PRODUCT_ID || 'placeholder-monthly-id'}`;
+      // Get checkout URL with user email if available
+      const baseUrl = process.env.NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL || 'https://filefixer.lemonsqueezy.com/buy/e5bbd23a-925e-44b3-a902-12e7bb725800';
+      const checkoutUrl = getCheckoutUrl(baseUrl, session?.user?.email || undefined);
       
-      // Open checkout in new window
+      // Open Lemon Squeezy checkout for Pro Monthly
       window.open(checkoutUrl, '_blank', 'width=800,height=900');
     } catch (error) {
       console.error('Error creating checkout URL:', error);

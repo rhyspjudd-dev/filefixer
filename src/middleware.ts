@@ -1,12 +1,21 @@
 import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
-export function middleware(req: NextRequest) {
-  // Only protect /pro routes - simplified for now
+export async function middleware(req: NextRequest) {
+  // Only protect /pro routes
   if (req.nextUrl.pathname.startsWith('/pro')) {
-    // For now, allow all access - auth integration to be completed
-    console.log('Pro route accessed:', req.nextUrl.pathname)
+    try {
+      // For now, redirect all /pro routes to pricing
+      // This will be updated when OAuth is fully configured
+      const pricingUrl = new URL('/pricing', req.url)
+      return NextResponse.redirect(pricingUrl)
+    } catch (error) {
+      console.error('Auth check error:', error)
+      // If auth fails, redirect to home
+      return NextResponse.redirect(new URL('/', req.url))
+    }
   }
+  
   return NextResponse.next()
 }
 

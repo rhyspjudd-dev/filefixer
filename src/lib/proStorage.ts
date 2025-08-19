@@ -6,6 +6,8 @@ interface ProUser {
   plan: 'monthly' | 'yearly' | 'lifetime';
   activatedAt: string;
   expiresAt?: string; // Only for monthly/yearly plans
+  orderId?: string; // Track original purchase order
+  subscriptionId?: string; // Track subscription if applicable
 }
 
 const PRO_USERS_FILE = path.join(process.cwd(), 'data', 'pro-users.json');
@@ -131,4 +133,47 @@ export async function getProUserDetails(email: string): Promise<ProUser | null> 
     console.error('Error getting pro user details:', error);
     return null;
   }
+}
+
+/**
+ * Add or update a pro user with enhanced tracking
+ */
+export async function addProUserWithDetails(
+  email: string, 
+  plan: 'monthly' | 'yearly' | 'lifetime',
+  orderId?: string,
+  subscriptionId?: string
+): Promise<void> {
+  const users = await loadProUsers();
+  const now = new Date().toISOString();
+  
+  // Calculate expiration date for subscription plans
+  let expiresAt: string | undefined;
+  if (plan === 'monthly') {
+    const expiry = new Date();
+    expiry.setMonth(expiry.getMonth() + 1);
+    expiresAt = expiry.toISOString();
+  } else if (plan === 'yearly') {
+    const expiry = new Date();
+    expiry.setFullYear(expiry.getFullYear() + 1);
+    expiresAt = expiry.toISOString();
+  }
+  // Lifetime has no expiry
+
+  // Remove existing user entry (if any) and add updated one
+  const filteredUsers = users.filter(u => u.email.toLowerCase() !== email.toLowerCase());
+  
+  const proUser: ProUser = {
+    email: email.toLowerCase(),
+    plan,
+    activatedAt: now,
+    expiresAt,
+    orderId,
+    subscriptionId
+  };
+
+  filteredUsers.push(proUser);
+  await saveProUsers(filteredUsers);
+  
+  console.log(`Added Pro user: ${email} (${plan}) - Order: ${orderId || 'N/A'} - Subscription: ${subscriptionId || 'N/A'}`);
 }

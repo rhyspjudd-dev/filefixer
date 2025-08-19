@@ -7,7 +7,7 @@ declare module "next-auth" {
       email: string
       image: string
       role: "admin" | "user"
-      plan: "free" | "pro"
+      plan: "free" | "monthly" | "yearly" | "lifetime"
       isPro: boolean
     }
   }
@@ -24,7 +24,7 @@ declare module "next-auth/jwt" {
   interface JWT {
     id?: string
     role?: "admin" | "user"
-    plan?: "free" | "pro"
+    plan?: "free" | "monthly" | "yearly" | "lifetime"
     isPro?: boolean
   }
 }

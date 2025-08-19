@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { addProUser, removeProUser } from '@/lib/proStorage';
+import { addProUserWithDetails, removeProUser } from '@/lib/proStorage';
 
 // Types for Lemon Squeezy webhook payloads
 interface LemonSqueezyWebhookPayload {
@@ -56,12 +56,22 @@ function verifyWebhookSignature(body: string, signature: string, secret: string)
 }
 
 // Get user JWT token and update it with Pro status
-async function updateUserProStatus(userEmail: string, planType: string): Promise<void> {
+async function updateUserProStatus(
+  userEmail: string, 
+  planType: string, 
+  orderId?: string, 
+  subscriptionId?: string
+): Promise<void> {
   try {
-    console.log(`Updating user ${userEmail} to Pro (${planType})`);
+    console.log(`Updating user ${userEmail} to Pro (${planType}) - Order: ${orderId || 'N/A'} - Subscription: ${subscriptionId || 'N/A'}`);
     
-    // Add user to pro storage
-    await addProUser(userEmail, planType as 'monthly' | 'yearly' | 'lifetime');
+    // Add user to pro storage with enhanced details
+    await addProUserWithDetails(
+      userEmail, 
+      planType as 'monthly' | 'yearly' | 'lifetime',
+      orderId,
+      subscriptionId
+    );
     
     console.log(`Successfully updated ${userEmail} to Pro status`);
   } catch (error) {
@@ -139,6 +149,7 @@ async function handleOrderCreated(payload: LemonSqueezyWebhookPayload) {
   const productId = data.attributes.product_id;
   const userEmail = data.attributes.user_email;
   const status = data.attributes.status;
+  const orderId = data.id;
 
   if (!userEmail || !productId) {
     console.error('Missing user email or product ID in order created webhook');
@@ -147,7 +158,7 @@ async function handleOrderCreated(payload: LemonSqueezyWebhookPayload) {
 
   // Only process paid orders
   if (status !== 'paid') {
-    console.log(`Order ${data.id} not paid yet, status: ${status}`);
+    console.log(`Order ${orderId} not paid yet, status: ${status}`);
     return;
   }
 
@@ -158,10 +169,10 @@ async function handleOrderCreated(payload: LemonSqueezyWebhookPayload) {
     return;
   }
 
-  console.log(`Processing order for ${userEmail}: ${planType} plan`);
+  console.log(`Processing order for ${userEmail}: ${planType} plan (Order ID: ${orderId})`);
   
-  // Update user to Pro status
-  await updateUserProStatus(userEmail, planType);
+  // Update user to Pro status with order tracking
+  await updateUserProStatus(userEmail, planType, orderId);
 }
 
 async function handleSubscriptionCreated(payload: LemonSqueezyWebhookPayload) {
@@ -169,6 +180,7 @@ async function handleSubscriptionCreated(payload: LemonSqueezyWebhookPayload) {
   const productId = data.attributes.product_id;
   const userEmail = data.attributes.user_email;
   const status = data.attributes.status;
+  const subscriptionId = data.id;
 
   if (!userEmail || !productId) {
     console.error('Missing user email or product ID in subscription created webhook');
@@ -177,7 +189,7 @@ async function handleSubscriptionCreated(payload: LemonSqueezyWebhookPayload) {
 
   // Only process active subscriptions
   if (status !== 'active') {
-    console.log(`Subscription ${data.id} not active yet, status: ${status}`);
+    console.log(`Subscription ${subscriptionId} not active yet, status: ${status}`);
     return;
   }
 
@@ -187,10 +199,10 @@ async function handleSubscriptionCreated(payload: LemonSqueezyWebhookPayload) {
     return;
   }
 
-  console.log(`Processing subscription for ${userEmail}: ${planType} plan`);
+  console.log(`Processing subscription for ${userEmail}: ${planType} plan (Subscription ID: ${subscriptionId})`);
   
-  // Update user to Pro status
-  await updateUserProStatus(userEmail, planType);
+  // Update user to Pro status with subscription tracking
+  await updateUserProStatus(userEmail, planType, undefined, subscriptionId);
 }
 
 async function handleSubscriptionUpdated(payload: LemonSqueezyWebhookPayload) {

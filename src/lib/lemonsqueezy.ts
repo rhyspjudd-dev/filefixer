@@ -32,7 +32,7 @@ export const pricingPlans: PricingPlan[] = [
       'No ads',
       'Technical support'
     ],
-    checkoutUrl: `${process.env.LEMONSQUEEZY_CHECKOUT_URL || 'https://filefixer.lemonsqueezy.com/checkout/buy'}/${process.env.LEMONSQUEEZY_YEARLY_PRODUCT_ID || 'placeholder-yearly-id'}`
+    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL || 'https://filefixer.lemonsqueezy.com/buy/125fa2e8-bd39-442b-9981-21032a6cd0ff?discount=0'
   },
   {
     id: 'lifetime',
@@ -46,7 +46,7 @@ export const pricingPlans: PricingPlan[] = [
       'No ads',
       'Technical support'
     ],
-    checkoutUrl: `${process.env.LEMONSQUEEZY_CHECKOUT_URL || 'https://filefixer.lemonsqueezy.com/checkout/buy'}/${process.env.LEMONSQUEEZY_LIFETIME_PRODUCT_ID || 'placeholder-lifetime-id'}`
+    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL || 'https://filefixer.lemonsqueezy.com/buy/d8b29450-0d16-466b-b4d2-2ec7ace0898d?discount=0'
   }
 ];
 
