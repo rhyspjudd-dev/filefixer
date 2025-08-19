@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect, useMemo } from 'react';
 import { useSession } from 'next-auth/react';
 import { checkDailyLimit, getUsageStats } from '@/utils/usageTracker';
 import Button from '@/components/Button';
@@ -24,8 +24,11 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
     attemptedFiles: number;
   } | null>(null);
 
-  // Check if user is Pro (Pro users have no daily limits)
-  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+  // Check if user is Pro (Pro users have no daily limits) - memoized
+  const isPro = useMemo(() => 
+    session?.user?.isPro || session?.user?.role === 'admin', 
+    [session?.user?.isPro, session?.user?.role]
+  );
 
   // Load daily usage stats for non-Pro users
   useEffect(() => {
@@ -34,14 +37,14 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
     }
   }, [isPro]);
 
-  const loadDailyUsage = async () => {
+  const loadDailyUsage = useCallback(async () => {
     try {
       const stats = await getUsageStats();
       setDailyUsage(stats);
     } catch (error) {
       console.error('Error loading daily usage:', error);
     }
-  };
+  }, []);
 
   const handleFileSelect = async (selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
@@ -64,7 +67,14 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       return;
     }
 
-    // For non-Pro users, check if adding these files would exceed daily limit
+    // Check max files limit first (sync operation)
+    const totalFiles = [...files, ...uniqueNewFiles];
+    if (totalFiles.length > maxFiles) {
+      alert(`Maximum ${maxFiles} files allowed. ${uniqueNewFiles.length} new files would exceed the limit.`);
+      return;
+    }
+
+    // For non-Pro users, check daily limit (optimized async operation)
     if (!isPro) {
       const limitCheck = await checkDailyLimit(uniqueNewFiles.length);
       if (!limitCheck.allowed) {
@@ -78,42 +88,36 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
         return;
       }
     }
-    
-    const totalFiles = [...files, ...uniqueNewFiles];
 
-    if (totalFiles.length > maxFiles) {
-      alert(`Maximum ${maxFiles} files allowed. ${uniqueNewFiles.length} new files would exceed the limit.`);
-      return;
-    }
-
+    // Set files immediately (no async dependency)
     setFiles(totalFiles);
     
-    // Refresh daily usage stats after adding files
+    // Refresh daily usage stats in background (non-blocking)
     if (!isPro) {
-      loadDailyUsage();
+      loadDailyUsage().catch(console.error);
     }
   };
 
-  const handleDrop = (e: React.DragEvent) => {
+  const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     handleFileSelect(e.dataTransfer.files);
-  };
+  }, [files, isPro, maxFiles]); // Add dependencies
 
-  const handleDragOver = (e: React.DragEvent) => {
+  const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
-  };
+  }, []);
 
-  const handleClick = () => {
+  const handleClick = useCallback(() => {
     // Reset the input value so the same files can be selected again
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
     fileInputRef.current?.click();
-  };
+  }, []);
 
-  const removeFile = (index: number) => {
+  const removeFile = useCallback((index: number) => {
     setFiles(files.filter((_, i) => i !== index));
-  };
+  }, [files, setFiles]);
 
   return (
     <div>
