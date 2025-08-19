@@ -15,6 +15,7 @@ FileFixer now has a complete Pro user management system that links Lemon Squeezy
 4. Lemon Squeezy sends webhook to `/api/webhooks/lemon`
 5. Webhook stores Pro status in `/data/pro-users.json` file with user's email
 
+### 2. Sign-In Flow
 
 **When a user signs in via Google/GitHub:**
 1. User completes OAuth authentication
