@@ -2,8 +2,10 @@
 
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import PricingPlans from '@/components/PricingPlans';
 import Button from '@/components/Button';
+import { getLocalizedPrices } from '@/utils/currency';
 
 // Helper function to get checkout URL with user email
 function getCheckoutUrl(baseUrl: string, userEmail?: string): string {
@@ -21,6 +23,30 @@ function getCheckoutUrl(baseUrl: string, userEmail?: string): string {
 
 export default function PricingPage() {
   const { data: session } = useSession();
+  const [prices, setPrices] = useState({
+    currency: 'GBP',
+    monthly: '£4',
+    yearly: '£29',
+    lifetime: '£59.99'
+  });
+  const [isLoadingPrices, setIsLoadingPrices] = useState(true);
+
+  // Load localized prices
+  useEffect(() => {
+    async function loadPrices() {
+      try {
+        const localizedPrices = await getLocalizedPrices();
+        setPrices(localizedPrices);
+      } catch (error) {
+        console.error('Failed to load localized prices:', error);
+        // Keep default GBP prices
+      } finally {
+        setIsLoadingPrices(false);
+      }
+    }
+    
+    loadPrices();
+  }, []);
 
   const handlePurchaseMonthly = () => {
     try {
@@ -72,6 +98,22 @@ export default function PricingPage() {
           Choose the perfect plan for your file renaming needs. Upgrade to Pro for unlimited file processing and advanced features.
         </p>
 
+        {/* Currency Indicator */}
+        {!isLoadingPrices && prices.currency !== 'GBP' && (
+          <div style={{
+            fontSize: '14px',
+            color: 'var(--text-muted)',
+            marginBottom: 'var(--spacing-md)',
+            padding: 'var(--spacing-xs) var(--spacing-sm)',
+            backgroundColor: 'var(--surface)',
+            border: '1px solid var(--border)',
+            borderRadius: 'var(--border-radius)',
+            display: 'inline-block'
+          }}>
+            💱 Prices shown in {prices.currency} (auto-detected from your location)
+          </div>
+        )}
+
         {/* Featured Pro Monthly */}
         <div style={{
           position: 'relative',
@@ -103,7 +145,7 @@ export default function PricingPage() {
           }}>
             🔐 Pro Tier
             <br />
-            £4/month
+            {isLoadingPrices ? '£4/month' : `${prices.monthly}/month`}
           </h2>
           
           <div style={{

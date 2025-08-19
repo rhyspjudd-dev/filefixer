@@ -1,8 +1,10 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
 import Button from '@/components/Button';
 import { pricingPlans, createCheckoutUrl } from '@/lib/lemonsqueezy';
+import { getLocalizedPrices } from '@/utils/currency';
 
 interface PricingPlansProps {
   className?: string;
@@ -11,6 +13,30 @@ interface PricingPlansProps {
 
 export default function PricingPlans({ className = '', style }: PricingPlansProps) {
   const { data: session } = useSession();
+  const [prices, setPrices] = useState({
+    currency: 'GBP',
+    monthly: '£4',
+    yearly: '£29',
+    lifetime: '£59.99'
+  });
+  const [isLoadingPrices, setIsLoadingPrices] = useState(true);
+
+  // Load localized prices
+  useEffect(() => {
+    async function loadPrices() {
+      try {
+        const localizedPrices = await getLocalizedPrices();
+        setPrices(localizedPrices);
+      } catch (error) {
+        console.error('Failed to load localized prices:', error);
+        // Keep default GBP prices
+      } finally {
+        setIsLoadingPrices(false);
+      }
+    }
+    
+    loadPrices();
+  }, []);
 
   const handlePurchase = (planId: string) => {
     try {
@@ -26,6 +52,23 @@ export default function PricingPlans({ className = '', style }: PricingPlansProp
       console.error('Error creating checkout URL:', error);
       alert('Unable to process checkout. Please try again.');
     }
+  };
+
+  // Get localized price for each plan
+  const getLocalizedPrice = (planId: string) => {
+    if (isLoadingPrices) {
+      const defaultPrices: { [key: string]: string } = {
+        'yearly': '£29',
+        'lifetime': '£59.99'
+      };
+      return defaultPrices[planId] || '£29';
+    }
+    
+    const priceMap: { [key: string]: string } = {
+      'yearly': prices.yearly,
+      'lifetime': prices.lifetime
+    };
+    return priceMap[planId] || prices.yearly;
   };
 
   return (
@@ -96,7 +139,7 @@ export default function PricingPlans({ className = '', style }: PricingPlansProp
                   backgroundClip: plan.isPopular ? 'text' : 'unset',
                   color: plan.isPopular ? 'transparent' : 'var(--text)'
                 }}>
-                  {plan.price}
+                  {getLocalizedPrice(plan.id)}
                 </span>
                 <span style={{
                   fontSize: '1rem',
