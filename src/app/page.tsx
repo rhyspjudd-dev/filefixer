@@ -7,6 +7,7 @@ import FileListPreview from '@/components/FileListPreview';
 import DownloadButton from '@/components/DownloadButton';
 import UsageIndicator from '@/components/UsageIndicator';
 import AuthButtons from '@/components/AuthButtons';
+import UpgradePromoBanner from '@/components/UpgradePromoBanner';
 
 export default function Home() {
   const [files, setFiles] = useState<File[]>([]);
@@ -78,6 +79,9 @@ export default function Home() {
             onUsageUpdate={handleUsageUpdate}
           />
         </main>
+
+
+          {/* <UpgradePromoBanner /> */}
 
         <footer style={{ 
           textAlign: 'center', 

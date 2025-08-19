@@ -17,7 +17,8 @@ export default function UsageIndicator() {
   const [loading, setLoading] = useState(true);
 
   // Don't show usage indicator for Pro users
-  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+  const user = session?.user as { isPro?: boolean; role?: string } | undefined;
+  const isPro = user?.isPro || user?.role === 'admin';
   
   useEffect(() => {
     if (!isPro) {

@@ -20,13 +20,12 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeModalData, setUpgradeModalData] = useState<{
     remainingFiles: number;
-    totalUsed: number;
     dailyLimit: number;
     attemptedFiles: number;
   } | null>(null);
 
   // Check if user is Pro
-  const isPro = session?.user?.isPro || session?.user?.role === 'admin';
+  const isPro = (session?.user as { isPro?: boolean; role?: string })?.isPro || (session?.user as { role?: string })?.role === 'admin';
 
   // Check usage limit when component mounts or files change (only for non-Pro users)
   useEffect(() => {
@@ -52,7 +51,6 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
       if (!limitCheck.allowed) {
         setUpgradeModalData({
           remainingFiles: limitCheck.remainingToday,
-          totalUsed: limitCheck.totalToday,
           dailyLimit: limitCheck.limit,
           attemptedFiles: files.length
         });
@@ -159,7 +157,6 @@ export default function DownloadButton({ files, casingStyle, onUsageUpdate }: Do
           isOpen={showUpgradeModal}
           onClose={() => setShowUpgradeModal(false)}
           remainingFiles={upgradeModalData.remainingFiles}
-          totalUsed={upgradeModalData.totalUsed}
           dailyLimit={upgradeModalData.dailyLimit}
           attemptedFiles={upgradeModalData.attemptedFiles}
         />

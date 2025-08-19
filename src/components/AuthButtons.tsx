@@ -21,7 +21,7 @@ export default function AuthButtons() {
 
   if (session?.user) {
     const user = session.user
-    const isAdmin = user.role === 'admin'
+    const isAdmin = (user as { role?: string }).role === 'admin'
 
     return (
       <div style={{
@@ -47,7 +47,6 @@ export default function AuthButtons() {
                 height: '24px',
                 borderRadius: '50%'
               }}
-              // eslint-disable-next-line @next/next/no-img-element
             />
           )}
           <span style={{
@@ -85,10 +84,21 @@ export default function AuthButtons() {
   }
 
   return (
-    <Link href="/signin">
-      <Button variant="primary" size="small">
-        Sign in
-      </Button>
-    </Link>
+    <div style={{
+      display: 'flex',
+      alignItems: 'center',
+      gap: 'var(--spacing-sm)'
+    }}>
+      <Link href="/pricing">
+        <Button variant="secondary" size="small">
+          Pricing
+        </Button>
+      </Link>
+      <Link href="/signin">
+        <Button variant="primary" size="small">
+          Sign in
+        </Button>
+      </Link>
+    </div>
   )
 }

@@ -1,13 +1,13 @@
 import Link from 'next/link';
 import { getServerSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import UpgradeButton from '@/components/UpgradeButton';
+import PricingPlans from '@/components/PricingPlans';
 
 export default async function ProPage() {
   const session = await getServerSession();
   
   if (!session) {
-    redirect('/signin');
+    redirect('/pricing');
   }
 
   const user = session.user;
@@ -164,27 +164,27 @@ export default async function ProPage() {
           </div>
         </div>
 
-        <div style={{ marginBottom: 'var(--spacing-lg)' }}>
-          <div style={{
-            fontSize: '3rem',
-            fontWeight: '700',
-            marginBottom: 'var(--spacing-xs)',
-            background: 'linear-gradient(135deg, var(--color-turquoise), var(--color-chartreuse))',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text'
-          }}>
-            $9.99
-          </div>
-          <div style={{
-            color: 'var(--text-muted)',
-            fontSize: '16px'
-          }}>
-            one-time payment • lifetime access
-          </div>
-        </div>
+        {/* Pricing Plans */}
+        {!user.isPro && !isAdmin && (
+          <PricingPlans style={{ marginBottom: 'var(--spacing-xl)' }} />
+        )}
 
-        <UpgradeButton isAdmin={isAdmin} />
+        {/* Admin/Pro Status */}
+        {(user.isPro || isAdmin) && (
+          <div style={{
+            background: 'linear-gradient(135deg, var(--color-warning), var(--color-chartreuse))',
+            color: 'var(--color-night)',
+            border: 'none',
+            borderRadius: 'var(--border-radius)',
+            padding: 'var(--spacing-md) var(--spacing-xl)',
+            fontSize: '18px',
+            fontWeight: '600',
+            marginBottom: 'var(--spacing-md)',
+            textAlign: 'center'
+          }}>
+            {isAdmin ? '🔑 Admin Account - Pro Access Active' : '✨ Pro Account Active'}
+          </div>
+        )}
 
         <div style={{
           fontSize: '12px',

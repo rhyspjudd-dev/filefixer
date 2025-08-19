@@ -60,7 +60,7 @@ async function getUserIP() {
         const { ip } = JSON.parse(cached);
         return ip;
       }
-    } catch (e) {
+    } catch {
       // Ignore cache errors
     }
     

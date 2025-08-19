@@ -9,7 +9,6 @@ interface UpgradeToProModalProps {
   isOpen: boolean;
   onClose: () => void;
   remainingFiles: number;
-  totalUsed: number;
   dailyLimit: number;
   attemptedFiles: number;
 }
@@ -18,7 +17,6 @@ export default function UpgradeToProModal({
   isOpen, 
   onClose, 
   remainingFiles, 
-  totalUsed, 
   dailyLimit, 
   attemptedFiles 
 }: UpgradeToProModalProps) {
@@ -42,7 +40,7 @@ export default function UpgradeToProModal({
             fontSize: '18px',
             fontWeight: '600'
           }}>
-            You've used all {dailyLimit} free files today!
+            You&apos;ve used all {dailyLimit} free files today!
           </h3>
           <p style={{ 
             margin: 0,
@@ -73,7 +71,7 @@ export default function UpgradeToProModal({
               color: 'var(--text)'
             }}>
               <span style={{ marginRight: 'var(--spacing-sm)', color: 'var(--color-success)' }}>✅</span>
-              <span>Unlimited file renaming</span>
+              <span>Unlimited file renaming and downloads</span>
             </div>
             <div style={{
               display: 'flex',
@@ -82,7 +80,7 @@ export default function UpgradeToProModal({
               color: 'var(--text)'
             }}>
               <span style={{ marginRight: 'var(--spacing-sm)', color: 'var(--color-success)' }}>✅</span>
-              <span>Upcoming AI-powered file organization</span>
+              <span>Additional formatting controls</span>
             </div>
             <div style={{
               display: 'flex',
@@ -91,7 +89,7 @@ export default function UpgradeToProModal({
               color: 'var(--text)'
             }}>
               <span style={{ marginRight: 'var(--spacing-sm)', color: 'var(--color-success)' }}>✅</span>
-              <span>Priority support</span>
+              <span>No ads</span>
             </div>
             <div style={{
               display: 'flex',
@@ -99,7 +97,7 @@ export default function UpgradeToProModal({
               color: 'var(--text)'
             }}>
               <span style={{ marginRight: 'var(--spacing-sm)', color: 'var(--color-success)' }}>✅</span>
-              <span>Advanced renaming patterns</span>
+              <span>Technical support</span>
             </div>
           </div>
         </div>
@@ -128,7 +126,7 @@ export default function UpgradeToProModal({
                 padding: 'var(--spacing-sm) var(--spacing-lg)'
               }}
             >
-              🚀 Upgrade to Pro
+              🚀 View Pro Plans
             </Button>
           </Link>
         </div>

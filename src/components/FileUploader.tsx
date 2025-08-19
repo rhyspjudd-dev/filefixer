@@ -19,23 +19,15 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [upgradeModalData, setUpgradeModalData] = useState<{
     remainingFiles: number;
-    totalUsed: number;
     dailyLimit: number;
     attemptedFiles: number;
   } | null>(null);
 
   // Check if user is Pro (Pro users have no daily limits) - memoized
-  const isPro = useMemo(() => 
-    session?.user?.isPro || session?.user?.role === 'admin', 
-    [session?.user?.isPro, session?.user?.role]
-  );
-
-  // Load daily usage stats for non-Pro users
-  useEffect(() => {
-    if (!isPro) {
-      loadDailyUsage();
-    }
-  }, [isPro]);
+  const isPro = useMemo(() => {
+    const user = session?.user as { isPro?: boolean; role?: string } | undefined;
+    return user?.isPro || user?.role === 'admin';
+  }, [session?.user]);
 
   const loadDailyUsage = useCallback(async () => {
     try {
@@ -46,7 +38,14 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
     }
   }, []);
 
-  const handleFileSelect = async (selectedFiles: FileList | null) => {
+  // Load daily usage stats for non-Pro users
+  useEffect(() => {
+    if (!isPro) {
+      loadDailyUsage();
+    }
+  }, [isPro, loadDailyUsage]);
+
+  const handleFileSelect = useCallback(async (selectedFiles: FileList | null) => {
     if (!selectedFiles) return;
 
     const newFiles = Array.from(selectedFiles);
@@ -80,7 +79,6 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       if (!limitCheck.allowed) {
         setUpgradeModalData({
           remainingFiles: limitCheck.remainingToday,
-          totalUsed: limitCheck.totalToday,
           dailyLimit: limitCheck.limit,
           attemptedFiles: uniqueNewFiles.length
         });
@@ -96,12 +94,12 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
     if (!isPro) {
       loadDailyUsage().catch(console.error);
     }
-  };
+  }, [files, maxFiles, isPro, setFiles, loadDailyUsage, setUpgradeModalData, setShowUpgradeModal]);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     handleFileSelect(e.dataTransfer.files);
-  }, [files, isPro, maxFiles]); // Add dependencies
+  }, [handleFileSelect]); // Add handleFileSelect dependency
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -215,7 +213,6 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
           isOpen={showUpgradeModal}
           onClose={() => setShowUpgradeModal(false)}
           remainingFiles={upgradeModalData.remainingFiles}
-          totalUsed={upgradeModalData.totalUsed}
           dailyLimit={upgradeModalData.dailyLimit}
           attemptedFiles={upgradeModalData.attemptedFiles}
         />
