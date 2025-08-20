@@ -170,6 +170,15 @@ export default function PricingPage() {
           >
             ⚡ Subscribe Monthly
           </Button>
+
+          <div style={{
+            fontSize: '12px',
+            color: 'rgba(255, 255, 255, 0.8)',
+            marginTop: 'var(--spacing-sm)',
+            textAlign: 'center'
+          }}>
+            Secure payment • Cancel anytime
+          </div>
         </div>
 
         {/* Pricing Plans */}
