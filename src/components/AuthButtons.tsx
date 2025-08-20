@@ -2,6 +2,7 @@
 
 import { useSession, signOut } from "next-auth/react"
 import Link from "next/link"
+import Image from "next/image"
 import Button from '@/components/Button'
 
 export default function AuthButtons() {
@@ -39,12 +40,12 @@ export default function AuthButtons() {
           border: '1px solid var(--border)'
         }}>
           {user.image && (
-            <img
+            <Image
               src={user.image}
               alt={user.name || 'User'}
+              width={24}
+              height={24}
               style={{
-                width: '24px',
-                height: '24px',
                 borderRadius: '50%'
               }}
             />

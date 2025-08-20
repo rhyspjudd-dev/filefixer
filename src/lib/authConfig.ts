@@ -1,6 +1,12 @@
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
+import { Session } from "next-auth"
+import { JWT } from "next-auth/jwt"
 import { enhanceSessionWithProStatus } from "./auth"
+
+interface ExtendedJWT extends JWT {
+  role?: "admin" | "user"
+}
 
 export const authOptions = {
   providers: [
@@ -14,11 +20,11 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async session({ session }: { session: any }) {
+    async session({ session }: { session: Session }) {
       // Enhance session with Pro status
       return await enhanceSessionWithProStatus(session)
     },
-    async jwt({ token, user }: { token: any; user: any }) {
+    async jwt({ token, user }: { token: ExtendedJWT; user?: { id?: string; role?: "admin" | "user" } }) {
       // Pass through user data to session
       if (user) {
         token.role = user.role || "user"
