@@ -31,12 +31,36 @@ export default function Home() {
       }}>
         <div style={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          justifyContent: 'space-between',
           alignItems: 'center',
           marginBottom: 'var(--spacing-lg)',
           padding: 'var(--spacing-sm) 0',
           borderBottom: '1px solid var(--border)'
         }}>
+          <nav>
+            <a 
+              href="/faq" 
+              style={{
+                color: 'var(--text-muted)',
+                textDecoration: 'none',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: 'var(--spacing-xs) var(--spacing-sm)',
+                borderRadius: 'var(--border-radius)',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.color = 'var(--color-turquoise)';
+                e.currentTarget.style.backgroundColor = 'var(--hover-background)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.color = 'var(--text-muted)';
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              FAQ
+            </a>
+          </nav>
           <AuthButtons />
         </div>
 
