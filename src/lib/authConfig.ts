@@ -1,10 +1,8 @@
-// NextAuth v4 API route  
-import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
-import { enhanceSessionWithProStatus } from "@/lib/auth"
+import { enhanceSessionWithProStatus } from "./auth"
 
-const authOptions = {
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -16,12 +14,10 @@ const authOptions = {
     }),
   ],
   callbacks: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session }: { session: any }) {
       // Enhance session with Pro status
       return await enhanceSessionWithProStatus(session)
     },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: any; user: any }) {
       // Pass through user data to session
       if (user) {
@@ -43,7 +39,10 @@ const authOptions = {
   },
 }
 
-// @ts-expect-error NextAuth compatibility issue with Next.js 15
-const handler = NextAuth.default ? NextAuth.default(authOptions) : NextAuth(authOptions)
+// Configuration for owner emails
+const OWNER_EMAILS = (process.env.OWNER_EMAILS || "")
+  .split(",")
+  .map(email => email.trim().toLowerCase())
+  .filter(Boolean)
 
-export { handler as GET, handler as POST }
+console.log('Owner emails configured:', OWNER_EMAILS.length)
