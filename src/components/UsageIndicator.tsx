@@ -67,7 +67,6 @@ export default function UsageIndicator() {
         : isNearLimit 
           ? 'linear-gradient(135deg, var(--color-warning), var(--color-chartreuse))'
           : 'linear-gradient(135deg, var(--color-turquoise), var(--color-chartreuse))',
-      padding: 'var(--spacing-sm)',
       borderRadius: 'var(--border-radius)',
       marginBottom: 'var(--spacing-md)',
       color: isAtLimit ? 'var(--color-night)' : 'var(--color-night)',
@@ -93,12 +92,12 @@ export default function UsageIndicator() {
         </div>
       ) : (
         <div>
-          📁 Daily usage: <strong>{stats.used}/{stats.limit}</strong> files renamed
+          {/* 📁 Daily usage: <strong>{stats.used}/{stats.limit}</strong> files renamed
           {isNearLimit && (
             <span style={{ marginLeft: 'var(--spacing-xs)' }}>
               ({stats.remaining} remaining)
             </span>
-          )}
+          )} */}
         </div>
       )}
     </div>
