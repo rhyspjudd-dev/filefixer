@@ -42,7 +42,7 @@ export default function PricingPlans({ className = '', style }: PricingPlansProp
     try {
       const checkoutUrl = createCheckoutUrl(
         planId,
-        session?.user?.id,
+        session?.user?.email || undefined,
         session?.user?.email || undefined
       );
       

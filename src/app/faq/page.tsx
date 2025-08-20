@@ -205,6 +205,8 @@ Use FileFixer to transform your image collection into SEO-optimized assets that 
   }
 ];
 
+import Link from 'next/link';
+
 export default function FAQ() {
   const { data: session } = useSession();
   const [openItems, setOpenItems] = useState<string[]>([]);
@@ -250,7 +252,7 @@ export default function FAQ() {
             maxWidth: '600px',
             margin: '0 auto'
           }}>
-            Everything you need to know about FileFixer's batch file renaming, 
+            Everything you need to know about FileFixer&apos;s batch file renaming, 
             SEO optimization, and file cleaning services.
           </p>
         </div>
@@ -361,7 +363,7 @@ export default function FAQ() {
 
         {/* Back to App */}
         <div style={{ textAlign: 'center' }}>
-          <a 
+          <Link 
             href="/"
             style={{
               display: 'inline-block',
@@ -381,7 +383,7 @@ export default function FAQ() {
             }}
           >
             ← Back to FileFixer
-          </a>
+          </Link>
         </div>
       </div>
     </div>
