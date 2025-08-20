@@ -1,9 +1,8 @@
-import NextAuth from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 import { enhanceSessionWithProStatus } from "./auth"
 
-const authOptions = {
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID || "",
@@ -39,9 +38,6 @@ const authOptions = {
     strategy: "jwt" as const,
   },
 }
-
-export default NextAuth(authOptions)
-export { authOptions }
 
 // Configuration for owner emails
 const OWNER_EMAILS = (process.env.OWNER_EMAILS || "")

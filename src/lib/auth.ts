@@ -1,13 +1,14 @@
 // Auth utilities with NextAuth integration
 import type { Session } from "next-auth"
+import { getServerSession as nextAuthGetServerSession } from "next-auth/next"
 import { cookies } from "next/headers"
 import { getProUserDetails } from "./proStorage"
-import { auth as nextAuth } from "./authConfig"
+import { authOptions } from "./authConfig"
 
 export async function getServerSession(): Promise<Session | null> {
   // Try to get real NextAuth session first
   try {
-    const session = await nextAuth()
+    const session = await nextAuthGetServerSession(authOptions)
     if (session) {
       return await enhanceSessionWithProStatus(session)
     }
