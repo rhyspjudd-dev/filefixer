@@ -10,10 +10,11 @@
   },
   "dependencies": {
     "@lemonsqueezy/lemonsqueezy.js": "^4.0.0",
+    "@types/next-auth": "^3.13.0",
     "crypto": "^1.0.1",
     "jszip": "^3.10.1",
     "next": "15.4.6",
-    "next-auth": "^5.0.0-beta.29",
+    "next-auth": "^4.24.11",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "^1.90.0"

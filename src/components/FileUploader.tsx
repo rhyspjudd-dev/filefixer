@@ -66,9 +66,9 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       return;
     }
 
-    // Check max files limit first (sync operation)
+    // Check max files limit first (sync operation) - only for non-Pro users
     const totalFiles = [...files, ...uniqueNewFiles];
-    if (totalFiles.length > maxFiles) {
+    if (!isPro && totalFiles.length > maxFiles) {
       alert(`Maximum ${maxFiles} files allowed. ${uniqueNewFiles.length} new files would exceed the limit.`);
       return;
     }
@@ -127,9 +127,9 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       >
         <div style={{ fontSize: '48px' }}>📁</div>
         <div>
-          <h3>Drop files here or click to browse</h3>
+          <h3>Drop files here</h3>
           <p style={{ color: 'var(--text-muted)', marginTop: 'var(--spacing-xs)' }}>
-            Maximum {maxFiles} files
+            {isPro ? 'Unlimited files' : `Maximum ${maxFiles} files`}
           </p>
           {!isPro && dailyUsage && (
             <p style={{ 

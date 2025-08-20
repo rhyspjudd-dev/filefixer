@@ -72,7 +72,8 @@ export default function UsageIndicator() {
       color: isAtLimit ? 'var(--color-night)' : 'var(--color-night)',
       fontSize: '14px',
       fontWeight: '500',
-      textAlign: 'center'
+      textAlign: 'center',
+      padding: 'var(--spacing-sm)',
     }}>
       {isAtLimit ? (
         <div>

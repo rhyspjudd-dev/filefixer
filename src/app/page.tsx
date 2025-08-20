@@ -44,14 +44,17 @@ export default function Home() {
           textAlign: 'center', 
           marginBottom: 'var(--spacing-xl)' 
         }}>
-          <h1 style={{ 
+          <h2 style={{ 
             marginBottom: 'var(--spacing-sm)',
             color: 'var(--text)'
           }}>
             <span>File</span><span>Fixer</span>
-          </h1>
+          </h2>
+          <h1>Instantly Clean and Rename Files for Web, SEO, and More.</h1>
           <p style={{ 
-            fontSize: '18px'
+            fontSize: '1rem',
+            marginTop: 'var(--spacing-md)',
+            color: 'var(--text-muted)'
           }}>
             Drop your files, we’ll remove spaces, clean names, and zip them up.
           </p>
@@ -63,7 +66,7 @@ export default function Home() {
           <FileUploader 
             files={files} 
             setFiles={setFiles} 
-            maxFiles={10} 
+            maxFiles={100} 
           />
           
           <FileListPreview 
