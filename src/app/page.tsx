@@ -90,7 +90,7 @@ export default function Home() {
           <FileUploader 
             files={files} 
             setFiles={setFiles} 
-            maxFiles={100} 
+            maxFiles={10} 
           />
           
           <FileListPreview 
