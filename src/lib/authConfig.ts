@@ -47,6 +47,8 @@ export const authOptions = {
   session: {
     strategy: "jwt" as const,
   },
+  // Ensure the correct URL is used for OAuth redirects
+  ...(process.env.NEXTAUTH_URL && { url: process.env.NEXTAUTH_URL }),
 }
 
 // Configuration for owner emails
