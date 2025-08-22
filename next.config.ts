@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Remove problematic optimizations that break production
+  // Critical performance optimizations for 1+ minute load times
   experimental: {
     scrollRestoration: true,
   },
@@ -10,10 +10,13 @@ const nextConfig: NextConfig = {
   output: 'standalone',
   poweredByHeader: false,
   
+  // Bundle optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  
   // Compress responses
   compress: true,
-  
-  // Optimize images
   images: {
     domains: [
       'lh3.googleusercontent.com', // Google profile images
@@ -21,27 +24,6 @@ const nextConfig: NextConfig = {
     ],
     formats: ['image/webp', 'image/avif'],
     minimumCacheTTL: 60,
-    dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-  },
-  
-  // Headers for performance (simplified)
-  async headers() {
-    return [
-      {
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'X-DNS-Prefetch-Control',
-            value: 'on'
-          },
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff'
-          }
-        ],
-      }
-    ];
   },
 };
 
