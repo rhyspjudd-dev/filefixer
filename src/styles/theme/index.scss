@@ -19,12 +19,12 @@
   --color-success: #{$color-success};
   --color-info: #{$color-info};
   
-  // Light theme (default)
-  --background: #{theme('background', 'light')};
-  --surface: #{theme('surface', 'light')};
-  --text: #{theme('text', 'light')};
-  --text-muted: #{theme('text-muted', 'light')};
-  --border: #{theme('border', 'light')};
+  // ALWAYS DARK THEME - Force $night background
+  --background: #{$night};
+  --surface: #1a1a1a;
+  --text: #{$white};
+  --text-muted: #{$dim-gray};
+  --border: #{$dim-gray};
   
   // Typography
   --font-family: #{$font-family};
@@ -41,26 +41,6 @@
   
   // Border radius
   --border-radius: #{$border-radius};
-}
-
-// Dark theme
-[data-theme="dark"] {
-  --background: #{theme('background', 'dark')};
-  --surface: #{theme('surface', 'dark')};
-  --text: #{theme('text', 'dark')};
-  --text-muted: #{theme('text-muted', 'dark')};
-  --border: #{theme('border', 'dark')};
-}
-
-// Auto dark mode based on system preference
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme]) {
-    --background: #{theme('background', 'dark')};
-    --surface: #{theme('surface', 'dark')};
-    --text: #{theme('text', 'dark')};
-    --text-muted: #{theme('text-muted', 'dark')};
-    --border: #{theme('border', 'dark')};
-  }
 }
 
 // ==========================================================================
