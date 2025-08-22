@@ -127,7 +127,7 @@ export default function FileUploader({ files, setFiles, maxFiles = 10 }: FileUpl
       >
         <div style={{ fontSize: '48px' }}>📁</div>
         <div>
-          <h3>Drop files here</h3>
+          <h3>Select or drop files</h3>
           <p style={{ color: 'var(--text-muted)', marginTop: 'var(--spacing-xs)' }}>
             {isPro ? 'Unlimited files' : `Maximum ${maxFiles} files`}
           </p>
