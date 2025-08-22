@@ -1,15 +1,16 @@
 import GoogleProvider from "next-auth/providers/google"
 import GitHubProvider from "next-auth/providers/github"
 import type { Session } from "next-auth"
+import type { JWT } from "next-auth/jwt"
 import { enhanceSessionWithProStatus } from "./auth"
 
 // TypeScript interfaces for proper typing
 interface ExtendedJWT {
-  role?: string;
+  role?: "admin" | "user";
 }
 
 interface ExtendedUser {
-  role?: string;
+  role?: "admin" | "user";
 }
 
 export const authOptions = {
