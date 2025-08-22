@@ -17,6 +17,12 @@ export const metadata: Metadata = {
       { url: '/android-chrome-512x512.png', sizes: '512x512', type: 'image/png' },
     ]
   },
+  // Chrome performance optimizations
+  other: {
+    'theme-color': '#1a1a1a',
+    'msapplication-TileColor': '#1a1a1a',
+    'viewport': 'width=device-width, initial-scale=1, viewport-fit=cover',
+  }
 };
 
 export default function RootLayout({
@@ -26,6 +32,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        {/* DNS prefetch for external resources */}
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="//lh3.googleusercontent.com" />
+        <link rel="dns-prefetch" href="//avatars.githubusercontent.com" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </head>
       <body>
         <GoogleAnalytics />
         <Providers>
