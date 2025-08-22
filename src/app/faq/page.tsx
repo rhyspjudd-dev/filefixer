@@ -349,14 +349,14 @@ export default function FAQ() {
               Need help or have a feature request? As a Pro user, you have direct access to our support team.
             </p>
             <a 
-              href="mailto:rhyspjudd.dev@gmail.com"
+              href="mailto:support@filefixer.app"
               style={{
                 color: 'var(--color-turquoise)',
                 textDecoration: 'none',
                 fontWeight: '600'
               }}
             >
-              rhyspjudd.dev@gmail.com
+              support@filefixer.app
             </a>
           </div>
         )}
