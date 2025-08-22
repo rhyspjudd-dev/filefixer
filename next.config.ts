@@ -6,6 +6,10 @@ const nextConfig: NextConfig = {
     scrollRestoration: true,
   },
   
+  // Optimize for serverless cold starts
+  output: 'standalone',
+  poweredByHeader: false,
+  
   // Compress responses
   compress: true,
   
