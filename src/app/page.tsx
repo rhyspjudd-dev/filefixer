@@ -1,29 +1,47 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback, useMemo } from 'react';
+import { useSession } from 'next-auth/react';
 import { type CasingStyle } from '@/utils/cleanFileName';
 import FileUploader from '@/components/FileUploader';
 import FileListPreview from '@/components/FileListPreview';
 import DownloadButton from '@/components/DownloadButton';
 import UsageIndicator from '@/components/UsageIndicator';
 import AuthButtons from '@/components/AuthButtons';
+import ErrorBoundary from '@/components/ErrorBoundary';
+import styles from './page.module.css';
 
 export default function Home() {
+  const { data: session, status } = useSession();
   const [files, setFiles] = useState<File[]>([]);
   const [casingStyle, setCasingStyle] = useState<CasingStyle>('lowercase');
   const [usageRefreshTrigger, setUsageRefreshTrigger] = useState(0);
+  
+  // State for hover effects to prevent hydration issues
+  const [faqHovered, setFaqHovered] = useState(false);
+  const [proHovered, setProHovered] = useState(false);
 
-  const handleUsageUpdate = () => {
+  // Check if user is Pro (same logic as FileUploader)
+  const isPro = useMemo(() => {
+    // Only check Pro status when session is fully loaded
+    if (status !== 'authenticated' || !session?.user) return false;
+    
+    const user = session.user as { isPro?: boolean; role?: string } | undefined;
+    return user?.isPro || user?.role === 'admin';
+  }, [session, status]);
+
+  const handleUsageUpdate = useCallback(() => {
     // Trigger refresh of usage indicator
     setUsageRefreshTrigger(prev => prev + 1);
-  };
+  }, []);
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      backgroundColor: 'var(--background)',
-      padding: 'var(--spacing-md)'
-    }}>
+    <ErrorBoundary>
+      <div style={{
+        minHeight: '100vh',
+        backgroundColor: 'var(--background)',
+        padding: 'var(--spacing-md)'
+      }}>
       <div style={{
         maxWidth: '800px',
         margin: '0 auto',
@@ -40,23 +58,9 @@ export default function Home() {
           <nav>
             <a 
               href="/faq" 
-              style={{
-                color: 'var(--text-muted)',
-                textDecoration: 'none',
-                fontSize: '14px',
-                fontWeight: '500',
-                padding: 'var(--spacing-xs) var(--spacing-sm)',
-                borderRadius: 'var(--border-radius)',
-                transition: 'all 0.2s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.color = 'var(--color-turquoise)';
-                e.currentTarget.style.backgroundColor = 'var(--hover-background)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.color = 'var(--text-muted)';
-                e.currentTarget.style.backgroundColor = 'transparent';
-              }}
+              className={`${styles.navLink} ${faqHovered ? styles.navLinkHover : ''}`}
+              onMouseEnter={() => setFaqHovered(true)}
+              onMouseLeave={() => setFaqHovered(false)}
             >
               FAQ
             </a>
@@ -74,17 +78,10 @@ export default function Home() {
           }}>
             <span>File</span><span>Fixer</span>
           </h2>
-          <h1>Instantly Clean and Rename Files for Web, SEO, and More.</h1>
-          <p style={{ 
-            fontSize: '1rem',
-            marginTop: 'var(--spacing-md)',
-            color: 'var(--text-muted)'
-          }}>
-            Drop your files, we’ll remove spaces, clean names, and zip them up.
-          </p>
+          <h1>Instantly remove spaces from file names.</h1>
         </header>
 
-        <UsageIndicator key={usageRefreshTrigger} />
+        {/* <UsageIndicator key={usageRefreshTrigger} /> */}
 
         <main>
           <FileUploader 
@@ -92,6 +89,19 @@ export default function Home() {
             setFiles={setFiles} 
             maxFiles={10} 
           />
+          
+          {/* Mini CTA for Pro upgrade - always render but hide for Pro users with CSS */}
+          <div className={`${styles.miniCta} ${status === 'authenticated' && isPro ? styles.hiddenForPro : ''}`}>
+            Need more than 10 files per day?{' '}
+            <a 
+              href="/pro"
+              className={`${styles.proLink} ${proHovered ? styles.proLinkHover : ''}`}
+              onMouseEnter={() => setProHovered(true)}
+              onMouseLeave={() => setProHovered(false)}
+            >
+              Go Pro
+            </a>
+          </div>
           
           <FileListPreview 
             files={files} 
@@ -119,7 +129,8 @@ export default function Home() {
         }}>
           <p>We never store your files • File processing happens entirely in your browser</p>
         </footer>
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }

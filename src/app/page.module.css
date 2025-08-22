@@ -57,8 +57,47 @@
 }
 
 .ctas {
-  display: flex;
-  gap: 16px;
+  padding: 20px 0;
+  text-align: center;
+}
+
+/* Navigation and hover styles to prevent hydration issues */
+.navLink {
+  color: var(--text-muted);
+  background-color: transparent;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--border-radius);
+  transition: all 0.2s ease;
+}
+
+.navLinkHover {
+  color: var(--color-turquoise);
+  background-color: var(--hover-background);
+}
+
+.proLink {
+  color: #e4fe5b;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.proLinkHover {
+  color: var(--color-accent);
+}
+
+.miniCta {
+  text-align: center;
+  margin: var(--spacing-lg);
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.miniCta.hiddenForPro {
+  display: none !important;
 }
 
 .ctas a {
