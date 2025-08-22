@@ -4,6 +4,7 @@ const nextConfig: NextConfig = {
   // Remove problematic optimizations that break production
   experimental: {
     scrollRestoration: true,
+  },
   
   // Compress responses
   compress: true,
