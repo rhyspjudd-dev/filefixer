@@ -29,17 +29,7 @@ const faqData = [
   {
     id: 'naming-conventions',
     question: 'What is lowercase vs kebab-case vs camelCase, etc?',
-    answer: `##Lowercase## (myfilename.jpg) filenames are strongly recommended for web uploads to avoid case-sensitivity issues.
-
-##Kebab-case## (my-file-name.jpg) is best for websites and SEO. Hyphens separate words, making filenames clean, readable, and search-engine friendly.
-
-##camelCase## (myFileName.jpg) is common in programming and JavaScript projects where compact naming is needed.
-
-##snake_case## (my_file_name.jpg) works well for Python, SQL, and databases.
-
-##PascalCase## (MyFileName.jpg) is used in some coding environments and APIs.
-
-[MARGIN_TOP_2REM]FileFixer supports all these naming conventions so your files stay organized, compatible, and professional.`
+    answer: '##Lowercase## (`myfilename.jpg`) filenames are strongly recommended for web uploads to avoid case-sensitivity issues.\n\n##Kebab-case## (`my-file-name.jpg`) is best for websites and SEO. Hyphens separate words, making filenames clean, readable, and search-engine friendly.\n\n##camelCase## (`myFileName.jpg`) is common in programming and JavaScript projects where compact naming is needed.\n\n##snake_case## (`my_file_name.jpg`) works well for Python, SQL, and databases.\n\n##PascalCase## (`MyFileName.jpg`) is used in some coding environments and APIs.\n\n[MARGIN_TOP_2REM]FileFixer supports all these naming conventions so your files stay organized, compatible, and professional.'
   },
   {
     id: 'security',
@@ -238,8 +228,8 @@ export default function FAQ() {
                         cleanLine = cleanLine.replace('[MARGIN_BOTTOM_2REM]', '');
                       }
                       
-                      // Convert **text** to bold, ##text## to colored headings, [text](url) to links, and [SignUpForPro](url) to special links
-                      const parts = cleanLine.split(/(\*\*[^*]+\*\*|##[^#]+##|\[SignUpForPro\]\([^)]+\)|\[[^\]]+\]\([^)]+\))/g);
+                      // Convert **text** to bold, ##text## to colored headings, `code` to code styling, [text](url) to links, and [SignUpForPro](url) to special links
+                      const parts = cleanLine.split(/(\*\*[^*]+\*\*|##[^#]+##|`[^`]+`|\[SignUpForPro\]\([^)]+\)|\[[^\]]+\]\([^)]+\))/g);
                       return (
                         <div key={index} style={{ marginTop, marginBottom }}>
                           {parts.map((part, partIndex) => {
@@ -257,6 +247,19 @@ export default function FAQ() {
                                 }}>
                                   {part.slice(2, -2)}
                                 </span>
+                              );
+                            } else if (part.startsWith('`') && part.endsWith('`')) {
+                              return (
+                                <code key={partIndex} style={{ 
+                                  backgroundColor: 'var(--color-turquoise)',
+                                  color: 'var(--color-accent)',
+                                  padding: '0.2rem 0.4rem',
+                                  borderRadius: '0.25rem',
+                                  fontSize: '0.9em',
+                                  fontFamily: 'Monaco, Consolas, "Liberation Mono", "Courier New", monospace'
+                                }}>
+                                  {part.slice(1, -1)}
+                                </code>
                               );
                             } else if (part.match(/\[SignUpForPro\]\([^)]+\)/)) {
                               // Handle Sign up for Pro link with special styling
