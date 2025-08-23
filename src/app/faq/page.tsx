@@ -13,9 +13,9 @@ const faqData = [
   {
     id: 'batch-rename',
     question: 'How to batch rename files online?',
-    answer: `Batch file renaming with FileFixer is fast and secure:[MARGIN_BOTTOM_2REM]
+    answer: `**Batch file renaming with FileFixer is fast and secure:**[MARGIN_BOTTOM_2REM]
 
-**Upload your files** – drag and drop up to 10 files free, or unlimited with Pro. Works for images, PDFs, videos, or documents.
+**Upload your files** – drop up to 10 files free, or unlimited with Pro. Works for images, PDFs, videos, or documents.
 
 **Choose a naming style** – lowercase, kebab-case, camelCase, PascalCase, or snake_case.
 
@@ -54,7 +54,7 @@ const faqData = [
 • **Priority support**: direct help via email with faster response times
 • **Commercial use**: FileFixer Pro for client work and ecommerce projects.
 
-**Pricing**: £4/month, £29/year, or £59.99 lifetime (one-time).`
+[MARGIN_TOP_2REM]**Pricing**: £4/month, £29/year, or £59.99 lifetime (one-time).`
   },
   {
     id: 'contact-filefixer',
