@@ -28,3 +28,10 @@
   for = "*.css"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+# Redirect www to apex domain to avoid IPv6 issues
+[[redirects]]
+  from = "https://www.filefixer.app/*"
+  to = "https://filefixer.app/:splat"
+  status = 301
+  force = true
