@@ -15,7 +15,7 @@
 Added new public environment variables:
 ```env
 NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL=https://filefixer.lemonsqueezy.com/buy/0d4caeae-f9f6-42ba-80d3-462532bb8b85
-NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL=https://filefixer.lemonsqueezy.com/buy/125fa2e8-bd39-442b-9981-21032a6cd0ff
+NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL=https://filefixer.lemonsqueezy.com/buy/9257bf42-57d0-4380-bf79-bbeae377c373
 NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/your-lifetime-url
 ```
 
@@ -26,7 +26,7 @@ NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/you
 - **ENV VAR**: `NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL`
 
 ### ✅ Yearly (Updated)  
-- **URL**: `https://filefixer.lemonsqueezy.com/buy/125fa2e8-bd39-442b-9981-21032a6cd0ff`
+- **URL**: `https://filefixer.lemonsqueezy.com/buy/9257bf42-57d0-4380-bf79-bbeae377c373`
 - **ENV VAR**: `NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL`
 
 ### ⏳ Lifetime (Waiting for URL)

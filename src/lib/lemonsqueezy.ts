@@ -32,7 +32,7 @@ export const pricingPlans: PricingPlan[] = [
       'No ads',
       'Technical support'
     ],
-    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL || 'https://filefixer.lemonsqueezy.com/buy/125fa2e8-bd39-442b-9981-21032a6cd0ff?discount=0'
+    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL || 'https://filefixer.lemonsqueezy.com/buy/9257bf42-57d0-4380-bf79-bbeae377c373?discount=0'
   },
   {
     id: 'lifetime',
