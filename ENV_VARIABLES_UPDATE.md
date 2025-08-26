@@ -14,7 +14,7 @@
 ### 3. Updated Environment Variables (`.env.example`)
 Added new public environment variables:
 ```env
-NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL=https://filefixer.lemonsqueezy.com/buy/e5bbd23a-925e-44b3-a902-12e7bb725800
+NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL=https://filefixer.lemonsqueezy.com/buy/0d4caeae-f9f6-42ba-80d3-462532bb8b85
 NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL=https://filefixer.lemonsqueezy.com/buy/125fa2e8-bd39-442b-9981-21032a6cd0ff
 NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/your-lifetime-url
 ```
@@ -22,7 +22,7 @@ NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/you
 ## Current URLs
 
 ### ✅ Monthly (Working)
-- **URL**: `https://filefixer.lemonsqueezy.com/buy/e5bbd23a-925e-44b3-a902-12e7bb725800`
+- **URL**: `https://filefixer.lemonsqueezy.com/buy/0d4caeae-f9f6-42ba-80d3-462532bb8b85`
 - **ENV VAR**: `NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL`
 
 ### ✅ Yearly (Updated)  

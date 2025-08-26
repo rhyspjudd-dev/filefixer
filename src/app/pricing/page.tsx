@@ -51,7 +51,7 @@ export default function PricingPage() {
   const handlePurchaseMonthly = () => {
     try {
       // Get checkout URL with user email if available
-      const baseUrl = process.env.NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL || 'https://filefixer.lemonsqueezy.com/buy/e5bbd23a-925e-44b3-a902-12e7bb725800';
+      const baseUrl = process.env.NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL || 'https://filefixer.lemonsqueezy.com/buy/0d4caeae-f9f6-42ba-80d3-462532bb8b85';
       const checkoutUrl = getCheckoutUrl(baseUrl, session?.user?.email || undefined);
       
       // Open Lemon Squeezy checkout for Pro Monthly
