@@ -71,7 +71,7 @@ LEMONSQUEEZY_LIFETIME_PRODUCT_ID=your_lifetime_product_id
 # Public checkout URLs (accessible in browser)
 NEXT_PUBLIC_LEMONSQUEEZY_MONTHLY_URL=https://filefixer.lemonsqueezy.com/buy/your-monthly-checkout-id
 NEXT_PUBLIC_LEMONSQUEEZY_YEARLY_URL=https://filefixer.lemonsqueezy.com/buy/your-yearly-checkout-id
-NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/your-lifetime-checkout-id
+NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL=https://filefixer.lemonsqueezy.com/buy/a843543d-95c3-4cb7-a541-570f3ae91574
 ```
 
 #### For Admin Access

@@ -46,7 +46,7 @@ export const pricingPlans: PricingPlan[] = [
       'No ads',
       'Technical support'
     ],
-    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL || 'https://filefixer.lemonsqueezy.com/buy/d8b29450-0d16-466b-b4d2-2ec7ace0898d?discount=0'
+    checkoutUrl: process.env.NEXT_PUBLIC_LEMONSQUEEZY_LIFETIME_URL || 'https://filefixer.lemonsqueezy.com/buy/a843543d-95c3-4cb7-a541-570f3ae91574?discount=0'
   }
 ];
 
