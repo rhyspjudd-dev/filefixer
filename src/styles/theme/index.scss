@@ -54,14 +54,15 @@ body {
 }
 
 h1 {
-  font-size: var(--font-size-h1);
-  font-weight: #{$font-weight-bold};
+  font-size: 2.25rem;
+  font-weight: 300;
   color: var(--text);
 }
 
 h2 {
-  font-size: 4.25rem;
-  font-weight: #{$font-weight-semibold};
+    font-size: 1.5rem;
+    font-weight: 600;
+    text-transform: lowercase;
   color: var(--text);
     span {
     &:first-child {
